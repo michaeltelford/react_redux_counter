@@ -49,7 +49,7 @@ const countReducer = (count = 0, action) => {
     default:
       return count;
   }
-};
+}
 ```
 
 ### Provider and Connect
@@ -59,7 +59,7 @@ By wrapping the entire app with the `Provider` component, every component in the
 ```js
 const mapStateToProps = (state, props) => {
   return {
-    count: state.count
+    count: state.count,
   };
 };
 

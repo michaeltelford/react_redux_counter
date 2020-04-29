@@ -18,8 +18,8 @@ A simple function that takes an action and the current state, and returns the ne
 const reducer = (action, state) => nextState;
 ```
 
-Reducer Rule #1: Never return undefined from a reducer, default the `state` param.
-Reducer Rule #2: Reducers must be pure functions, no side effects e.g. API calls.
+Reducer Rule #1: Never return undefined from a reducer, default the `state` param.<br />
+Reducer Rule #2: Reducers must be pure functions, no side effects e.g. API calls.<br />
 Reducer Rule #3: Never directly mutate the state, treat it as read only e.g.
 
 ```js
@@ -31,12 +31,37 @@ return {
 
 ### Actions and Dispatch
 
-An action is plain object with a property called `type` eg. `{ type: 'ACTION_NAME' }`. In order to make an action DO something, you need to `dispatch` it. Call `dispatch` with an action, and Redux will call **all** reducers with that action (one of which, you'll have wired up to process the action - typically using a `switch` statement) e.g.
+An action is a plain object with a property called `type` eg. `{ type: 'ACTION_NAME' }`. In order to make an action DO something, you need to `dispatch` it. Call `dispatch` with an action, and Redux will call **all** reducers with that action (one of which, you'll have wired up to process the action - typically using a `switch` statement) e.g.
 
 ```js
 store.dispatch({ type: "INCREMENT" });
 ```
 
+```js
+const countReducer = (count = 0, action) => {
+  switch (action.type) {
+    case INCREMENT:
+      return count + 1;
+    case DECREMENT:
+      return count - 1;
+    case RESET:
+      return 0;
+    default:
+      return count;
+  }
+};
+```
+
 ### Provider and Connect
 
 By wrapping the entire app with the `Provider` component, every component in the app tree will be able to access the Redux store if needed; but not automatically. We’ll need to use the `connect` function on our components to access the store. Under the hood the `subscribe` and `getState` functions are called to re-`render` the `connect`ed components.
+
+```js
+const mapStateToProps = (state, props) => {
+  return {
+    count: state.count
+  };
+};
+
+export default connect(mapStateToProps)(Counter);
+```
